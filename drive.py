@@ -19,7 +19,10 @@ def list_and_download_files(upload_folder):
     else:
         for file in files:
             st.write("- " + file)
-            download_button = st.download_button(label="Download", data=open(os.path.join(upload_folder, file), "rb").read(), file_name=file)
+            file_path = os.path.join(upload_folder, file)
+            with open(file_path, "rb") as f:
+                file_content = f.read()
+            st.download_button(label="Download", data=file_content, file_name=file)
 
 def main():
     st.title('Cloud Drive')
@@ -29,8 +32,7 @@ def main():
     os.makedirs(upload_folder, exist_ok=True)
 
     # Upload File button at top-right corner
-    col_upload = st.sidebar.empty()
-    upload_button = col_upload.button("Upload File", key="upload_button")
+    upload_button = st.button("Upload File", key="upload_button")
 
     if upload_button:
         upload_file(upload_folder)
