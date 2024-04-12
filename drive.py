@@ -18,10 +18,10 @@ def list_and_download_files(upload_folder):
         st.write("No files found.")
     else:
         for file in files:
-            st.write("- " + file)
             file_path = os.path.join(upload_folder, file)
             with open(file_path, "rb") as f:
                 file_content = f.read()
+            st.write(f"- {file}")
             st.download_button(label="Download", data=file_content, file_name=file)
 
 def main():
@@ -32,7 +32,8 @@ def main():
     os.makedirs(upload_folder, exist_ok=True)
 
     # Upload File button at top-right corner
-    upload_button = st.button("Upload File", key="upload_button")
+    col_upload = st.sidebar.empty()
+    upload_button = col_upload.button("Upload File", key="upload_button")
 
     if upload_button:
         upload_file(upload_folder)
